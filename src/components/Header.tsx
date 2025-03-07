@@ -7,7 +7,7 @@ export default function Header() {
     <div className="shadow p-3">
       <Link
         href="/"
-        className="flex items-center gap-3 justify-center w-max m-auto"
+        className="flex items-center gap-3 justify-center w-max m-auto text-blue-900 font-bold"
       >
         <Image src={logo} alt="logo" width={60} height={60} />
         <span className="text-xl font-semibold">My Awesome Blog</span>

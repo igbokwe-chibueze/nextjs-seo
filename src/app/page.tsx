@@ -10,7 +10,7 @@ export default async function BlogPage() {
 
   return (
     <div className="max-w-prose m-auto space-y-5">
-      <h1 className="text-3xl text-center mb-3 font-bold">Posts</h1>
+      <h1 className="text-3xl text-center mb-3 font-bold text-blue-900">Posts</h1>
       {posts.map(({ id, title }) => (
         <article key={title}>
           <h2>
