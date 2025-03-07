@@ -1,13 +1,35 @@
 import { delay } from "@/lib/utils";
 import { BlogPost } from "@/models/BlogPost";
+import { Metadata } from "next";
 
 interface BlogPostPageProps {
   params: { postId: string };
 }
 
-export default async function BlogPostPage({
-  params: { postId },
-}: BlogPostPageProps) {
+// Manually deduplicate requests if not using fetch
+// const getPost = cache(async (postId: string) => {
+//   const post = await prisma.post.findUnique(postId);
+//   return post;
+// })
+
+export async function generateMetadata({ params: { postId } } : BlogPostPageProps):Promise<Metadata> {
+  const response = await fetch(`https://dummyjson.com/posts/${postId}`); // i were manually deduplicating "const response = await getPost()"
+  const post: BlogPost = await response.json();
+  return {
+    title: post.title,
+    description: post.body,
+    
+    // openGraph: {
+    //   images: [
+    //     {
+    //       url: post.imageUrl
+    //     }
+    //   ]
+    // } // I would use this if the blog post has an image to generate an openGraph image for this dynamic page.
+  }
+}  
+
+export default async function BlogPostPage({ params: { postId } }: BlogPostPageProps) {
   const response = await fetch(`https://dummyjson.com/posts/${postId}`);
   const { title, body }: BlogPost = await response.json();
 
