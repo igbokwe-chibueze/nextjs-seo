@@ -2,6 +2,17 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  robots: {
+    // `index: false` tells search engines not to include this page in their index,
+    // which means it won't appear in search results.
+    index: false,
+    // `follow: true` instructs crawlers to still follow the links on this page,
+    // even though the page itself won't be indexed.
+    follow: true,
+    // `nocache: true` advises search engines not to store a cached copy of this page.
+    // This ensures that if the page changes, users won't be served an outdated version from the cache.
+    nocache: true,
+  }
 }
 
 
