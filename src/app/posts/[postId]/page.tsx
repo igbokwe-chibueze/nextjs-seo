@@ -1,9 +1,20 @@
 import { delay } from "@/lib/utils";
-import { BlogPost } from "@/models/BlogPost";
+import { BlogPost, BlogPostsResponse } from "@/models/BlogPost";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 interface BlogPostPageProps {
   params: { postId: string };
+}
+
+export async function generateStaticParams() {
+  const response = await fetch("https://dummyjson.com/posts");
+  const { posts }: BlogPostsResponse = await response.json();
+
+  return posts.map(({ id }) => id);
+
+  // This would only catche the first five posts. The rest will be rendered & cached at first access.
+  //return posts.map(({ id }) => id).slice(0, 5);
 }
 
 // Manually deduplicate requests if not using fetch
@@ -32,6 +43,10 @@ export async function generateMetadata({ params: { postId } } : BlogPostPageProp
 export default async function BlogPostPage({ params: { postId } }: BlogPostPageProps) {
   const response = await fetch(`https://dummyjson.com/posts/${postId}`);
   const { title, body }: BlogPost = await response.json();
+
+  if (response.status === 404) {
+    notFound();
+  }
 
   await delay(1000);
 
